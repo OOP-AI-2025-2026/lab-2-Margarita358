@@ -1,46 +1,72 @@
 package ua.opnu;
 
-
 public class TimeSpan {
+    private int hours;
+    private int minutes;
 
-    // TODO: add class fields
-
-    TimeSpan(int hours, int minutes) {
-        // TODO: write constructor body
+    // Конструктор
+    public TimeSpan(int hours, int minutes) {
+        if (hours < 0 || minutes < 0 || minutes >= 60) {
+            this.hours = 0;
+            this.minutes = 0;
+        } else {
+            this.hours = hours;
+            this.minutes = minutes;
+        }
     }
 
-    int getHours() {
-        return 0;
+    // Гетери
+    public int getHours() {
+        return hours;
     }
 
-    int getMinutes() {
-        // TODO: write method body
-        return 0;
+    public int getMinutes() {
+        return minutes;
     }
 
-    void add(int hours, int minutes) {
-        // TODO: write method body
+    // Додати години та хвилини
+    public void add(int addHours, int addMinutes) {
+        if (addHours < 0) addHours = 0;
+        if (addMinutes < 0) addMinutes = 0;
+
+        int totalMinutes = this.minutes + addMinutes;
+        this.hours += addHours + totalMinutes / 60;
+        this.minutes = totalMinutes % 60;
     }
 
-    void addTimeSpan(TimeSpan timespan) {
-        // TODO: write method body
+    // Додати інший TimeSpan
+    public void addTimeSpan(TimeSpan timespan) {
+        add(timespan.getHours(), timespan.getMinutes());
     }
 
-    double getTotalHours() {
-        // TODO: write method body
-        return 0;
+    // Повернути загальні години як double
+    public double getTotalHours() {
+        return hours + minutes / 60.0;
     }
 
-    int getTotalMinutes() {
-        // TODO: write method body
-        return 0;
+    // Повернути загальні хвилини
+    public int getTotalMinutes() {
+        return hours * 60 + minutes;
     }
 
-    void subtract(TimeSpan span) {
-        // TODO: write method body
+    // Відняти інший TimeSpan
+    public void subtract(TimeSpan span) {
+        int totalMinutes = getTotalMinutes() - span.getTotalMinutes();
+        if (totalMinutes < 0) totalMinutes = 0;
+        this.hours = totalMinutes / 60;
+        this.minutes = totalMinutes % 60;
     }
 
-    void scale(int factor) {
-        // TODO: write method body
+    // Масштабувати TimeSpan на певний коефіцієнт
+    public void scale(int factor) {
+        if (factor <= 0) return; // нічого не робимо для 0 або негативного коефіцієнта
+        int totalMinutes = getTotalMinutes() * factor;
+        this.hours = totalMinutes / 60;
+        this.minutes = totalMinutes % 60;
+    }
+
+    @Override
+    public String toString() {
+        return hours + " годин " + minutes + " хвилин";
     }
 }
